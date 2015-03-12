@@ -1,5 +1,3 @@
-package f2.spw;
-
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -24,7 +22,7 @@ public class Enemy extends Sprite{
 			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 
 					(float)(Y_TO_DIE - y)/(Y_TO_DIE - Y_TO_FADE)));
 		}
-		g.setColor(Color.RED);
+		g.setColor(Color.ORANGE);
 		g.fillRect(x, y, width, height);
 		
 	}
