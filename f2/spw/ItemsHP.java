@@ -1,6 +1,8 @@
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
+import java.awt.Image;
 
 public class ItemsHP extends Sprite{
 	public static final int Y_TO_FADE = 400;
@@ -10,14 +12,16 @@ public class ItemsHP extends Sprite{
 	private boolean alive = true;
 	
 	public ItemsHP(int x, int y) {
-		super(x, y, 5, 10);
+		super(x, y, 12, 12);
 		
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.setColor(Color.GREEN);
-		g.fillRect(x, y, width, height);
+		//g.setColor(Color.GREEN);
+		//g.fillRect(x, y, width, height);
+		Image img = Toolkit.getDefaultToolkit().getImage("hp.jpg");
+        g.drawImage(img,x, y, width, height, null);
 	}
 
 	public void proceed(){
