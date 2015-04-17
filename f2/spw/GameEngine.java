@@ -13,7 +13,8 @@ public class GameEngine implements KeyListener, GameReporter{
 	GamePanel gp;
 		
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-	private ArrayList<ItemsHP> itemsHP = new ArrayList<ItemsHP>();	
+	private ArrayList<ItemsHP> itemsHP = new ArrayList<ItemsHP>();
+	private ArrayList<Enemy2> enemies2 = new ArrayList<Enemy2>();	
 	private SpaceShip v;	
 	
 	private Timer timer;
@@ -34,6 +35,7 @@ public class GameEngine implements KeyListener, GameReporter{
 			public void actionPerformed(ActionEvent arg0) {
 				process();
 				processItems();
+				processEnermy2();
 			}
 		});
 		timer.setRepeats(true);
@@ -48,6 +50,12 @@ public class GameEngine implements KeyListener, GameReporter{
 		Enemy e = new Enemy((int)(Math.random()*390), 30);
 		gp.sprites.add(e);
 		enemies.add(e);
+	}
+
+	private void generateEnemy2(){
+		Enemy2 e2 = new Enemy2((int)(Math.random()*390), 30);
+		gp.sprites.add(e2);
+		enemies2.add(e2);
 	}
 
 	private void generateItemsHP(){
@@ -82,6 +90,42 @@ public class GameEngine implements KeyListener, GameReporter{
 			if(er.intersects(vr)){
 				hp--;
 				e.enermyCrash();
+				if(hp < 1){
+					die();
+				}
+				gp.updateGameUI(this);
+				return;
+			}
+		}
+
+	}
+
+	private void processEnermy2(){
+		if(Math.random() < difficulty/20){
+			generateEnemy2();
+		}
+		
+		Iterator<Enemy2> e_iter = enemies2.iterator();
+		while(e_iter.hasNext()){
+			Enemy2 e2 = e_iter.next();
+			e2.proceed();
+			
+			if(!e2.isAlive()){
+				e_iter.remove();
+				gp.sprites.remove(e2);
+			}
+		}
+
+		gp.updateGameUI(this);
+		
+		Rectangle2D.Double vr = v.getRectangle();
+		Rectangle2D.Double er;
+		for(Enemy2 e2 : enemies2){
+			er = e2.getRectangle();
+			if(er.intersects(vr)){
+				hp -= 2;
+				score -= 100;
+				e2.enermy2Crash();
 				if(hp < 1){
 					die();
 				}
