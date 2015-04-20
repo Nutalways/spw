@@ -12,13 +12,13 @@ public class Enemy2 extends Sprite{
 	private boolean alive = true;
 	
 	public Enemy2(int x, int y) {
-		super(x, y, 18, 18);
+		super(x, y, 25, 25);
 		
 	}
 
 	@Override
 	public void draw(Graphics2D g) {
-		Image img = Toolkit.getDefaultToolkit().getImage("enermy.jpg");
+		Image img = Toolkit.getDefaultToolkit().getImage("enermy.png");
         g.drawImage(img,x, y, width, height, null);
 	}
 

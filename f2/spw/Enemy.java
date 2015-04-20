@@ -16,7 +16,7 @@ public class Enemy extends Sprite{
 
 	@Override
 	public void draw(Graphics2D g) {
-		g.setColor(Color.ORANGE);
+		g.setColor(Color.BLUE);
 		g.fillRect(x, y, width, height);
 	}
 
