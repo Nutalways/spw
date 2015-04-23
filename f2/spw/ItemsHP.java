@@ -12,7 +12,7 @@ public class ItemsHP extends Sprite{
 	private boolean alive = true;
 	
 	public ItemsHP(int x, int y) {
-		super(x, y, 12, 12);
+		super(x, y, 15, 15);
 		
 	}
 
