@@ -14,7 +14,8 @@ public class GameEngine implements KeyListener, GameReporter{
 		
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	private ArrayList<ItemsHP> itemsHP = new ArrayList<ItemsHP>();
-	private ArrayList<Enemy2> enemies2 = new ArrayList<Enemy2>();	
+	private ArrayList<Enemy2> enemies2 = new ArrayList<Enemy2>();
+	private ArrayList<Bullet> bullet = new ArrayList<Bullet>();	
 	private SpaceShip v;	
 	
 	private Timer timer;
@@ -40,6 +41,7 @@ public class GameEngine implements KeyListener, GameReporter{
 				process();
 				processItems();
 				processEnermy2();
+				processBullet();
 			}
 		});
 		timer.setRepeats(true);
@@ -69,6 +71,8 @@ public class GameEngine implements KeyListener, GameReporter{
 		itemsHP.add(i);
 	}
 	
+	
+
 	private void process(){
 		if(Math.random() < difficulty){
 			generateEnemy();
@@ -173,6 +177,38 @@ public class GameEngine implements KeyListener, GameReporter{
 		}
 	}
 
+	private void processBullet(){
+		//if(Math.random() < difficulty){
+		//	generateBullet();
+		//}
+
+
+		Iterator<Bullet> b_iter = bullet.iterator();
+		while(b_iter.hasNext()){
+			Bullet b = b_iter.next();
+			b.proceed();
+			
+			if(!b.isAlive()){
+				b_iter.remove();
+				gp.sprites.remove(b);
+			}
+		}
+
+		gp.updateGameUI(this);
+
+		Rectangle2D.Double vr = v.getRectangle();
+		Rectangle2D.Double er;
+		for(Bullet b : bullet){
+			er = b.getRectangle();
+			if(er.intersects(vr)){
+				score += 10;			
+				b.bulletCrash();
+				gp.updateGameUI(this);
+				return;
+			}
+		}
+	}
+
 	public void die(){
 		timer.stop();
 	}
@@ -209,6 +245,9 @@ public class GameEngine implements KeyListener, GameReporter{
 		case KeyEvent.VK_ENTER:
 			start();
 			break;
+		case KeyEvent.VK_SPACE:
+			fire();
+			break;
 		}
 	}
 
@@ -218,6 +257,12 @@ public class GameEngine implements KeyListener, GameReporter{
 	
 	public int getHpScore(){
 		return hp;
+	}
+
+	private void fire(){
+		Bullet b = new Bullet((v.x) + (v.width/2), v.y);
+		gp.sprites.add(b);
+		bullet.add(b);
 	}
 
 	@Override
