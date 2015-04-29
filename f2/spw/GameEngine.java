@@ -86,7 +86,7 @@ public class GameEngine implements KeyListener, GameReporter{
 			if(!e.isAlive()){
 				e_iter.remove();
 				gp.sprites.remove(e);
-				score += 10;
+				//score += 10;
 			}
 		}
 
@@ -94,8 +94,17 @@ public class GameEngine implements KeyListener, GameReporter{
 		
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er;
+		Rectangle2D.Double br;
 		for(Enemy e : enemies){
 			er = e.getRectangle();
+			for(Bullet b : bullet){
+				br = b.getRectangle();
+				if(br.intersects(er)){
+					score += 10;
+					gp.sprites.remove(e);
+					e.enermyCrash();
+				}
+			}
 			if(er.intersects(vr)){
 				hp--;
 				e.enermyCrash();
@@ -105,6 +114,7 @@ public class GameEngine implements KeyListener, GameReporter{
 				gp.updateGameUI(this);
 				return;
 			}
+			
 		}
 
 	}
@@ -129,8 +139,17 @@ public class GameEngine implements KeyListener, GameReporter{
 		
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er;
+		Rectangle2D.Double br;
 		for(Enemy2 e2 : enemies2){
 			er = e2.getRectangle();
+			for(Bullet b : bullet){
+				br = b.getRectangle();
+				if(br.intersects(er)){
+					score += 10;
+					gp.sprites.remove(e2);
+					e2.enermy2Crash();
+				}
+			}
 			if(er.intersects(vr)){
 				hp -= 2;
 				score -= 100;
@@ -196,21 +215,40 @@ public class GameEngine implements KeyListener, GameReporter{
 
 		gp.updateGameUI(this);
 
-		Rectangle2D.Double vr = v.getRectangle();
-		Rectangle2D.Double er;
-		for(Bullet b : bullet){
-			er = b.getRectangle();
-			if(er.intersects(vr)){
-				score += 10;			
-				b.bulletCrash();
-				gp.updateGameUI(this);
-				return;
-			}
+		
+	}
+
+
+	//SpaceShip 
+	public void restart(){
+		for(Enemy e : enemies){
+			gp.sprites.remove(e);
+			e.enermyCrash();
 		}
+		for(Enemy2 e2 : enemies2){
+			gp.sprites.remove(e2);
+			e2.enermy2Crash();
+		}
+		for(ItemsHP i : itemsHP){
+			gp.sprites.remove(i);
+			i.itemsCrash();
+		}
+		for(Bullet b : bullet){
+			gp.sprites.remove(b);
+			b.bulletCrash();
+		}
+		start();
+		hp = 4;
+		score = 0;
+		v.x = 180;
+		v.y = 550;
+
 	}
 
 	public void die(){
+
 		timer.stop();
+
 	}
 	
 	void controlVehicle(KeyEvent e) {
@@ -244,6 +282,9 @@ public class GameEngine implements KeyListener, GameReporter{
 			break;
 		case KeyEvent.VK_ENTER:
 			start();
+			break;
+		case KeyEvent.VK_R:
+			restart();
 			break;
 		case KeyEvent.VK_SPACE:
 			fire();
