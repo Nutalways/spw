@@ -24,6 +24,8 @@ public class GameEngine implements KeyListener, GameReporter{
 	private double difficulty = 0.1;
 	private int hp = 4;
 
+	private boolean check = true;
+
 	public GameEngine(GamePanel gp, SpaceShip v) {
 		this.gp = gp;
 		this.v = v;
@@ -38,10 +40,14 @@ public class GameEngine implements KeyListener, GameReporter{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				process();
-				processItems();
-				processEnermy2();
-				processBullet();
+				if(check)
+					processItems();
+				if(check)
+					processBullet();
+				if(check)
+					processEnermy2();
+				if(check)
+					process();
 			}
 		});
 		timer.setRepeats(true);
@@ -110,8 +116,10 @@ public class GameEngine implements KeyListener, GameReporter{
 				e.enermyCrash();
 				if(hp < 1){
 					die();
+					gp.endUI(this);
 				}
-				gp.updateGameUI(this);
+				//gp.updateGameUI(this);
+				
 				return;
 			}
 			
@@ -135,7 +143,7 @@ public class GameEngine implements KeyListener, GameReporter{
 			}
 		}
 
-		gp.updateGameUI(this);
+		//gp.updateGameUI(this);
 		
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er;
@@ -156,8 +164,10 @@ public class GameEngine implements KeyListener, GameReporter{
 				e2.enermy2Crash();
 				if(hp < 1){
 					die();
+					gp.endUI(this);
 				}
-				gp.updateGameUI(this);
+				//gp.updateGameUI(this);
+				
 				return;
 			}
 		}
@@ -181,7 +191,7 @@ public class GameEngine implements KeyListener, GameReporter{
 			}
 		}
 
-		gp.updateGameUI(this);
+		//gp.updateGameUI(this);
 
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er;
@@ -213,7 +223,7 @@ public class GameEngine implements KeyListener, GameReporter{
 			}
 		}
 
-		gp.updateGameUI(this);
+		//gp.updateGameUI(this);
 
 		
 	}
@@ -237,6 +247,7 @@ public class GameEngine implements KeyListener, GameReporter{
 			gp.sprites.remove(b);
 			b.bulletCrash();
 		}
+		check = true;
 		start();
 		hp = 4;
 		score = 0;
@@ -248,6 +259,8 @@ public class GameEngine implements KeyListener, GameReporter{
 	public void die(){
 
 		timer.stop();
+		check = false;
+		
 
 	}
 	
@@ -281,7 +294,8 @@ public class GameEngine implements KeyListener, GameReporter{
 			difficulty += 0.1;
 			break;
 		case KeyEvent.VK_ENTER:
-			start();
+			if(check)
+				start();
 			break;
 		case KeyEvent.VK_R:
 			restart();

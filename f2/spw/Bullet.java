@@ -3,7 +3,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class Bullet extends Sprite{
-	public static final int Y_TO_FADE = 600;
 	public static final int Y_TO_DIE = 0;
 	
 	private int step = 12;
